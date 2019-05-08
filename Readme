@@ -1,0 +1,7 @@
+http://localhost:8080/hello
+http://localhost:8080/getCustInfo
+http://localhost:8080/getNoOfRows
+http://localhost:8080/getWithinRange
+http://localhost:8080/getSumOfAges
+http://localhost:8080/byAge/17
+http://localhost:8080/byEmpId?empId=791

@@ -1,29 +1,26 @@
-HELP.md
-/target/
-!.mvn/wrapper/maven-wrapper.jar
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!/.mvn/wrapper/maven-wrapper.jar
+.settings/
+*/.settings/*
+*/.classpath
 .project
-.settings
-.springBeans
-.sts4-cache
+.classpath
+bin/*
+<<<<<<< HEAD
+bin
+*/META-INF/MANIFEST.MF
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+=======
+bin
+>>>>>>> bf5076136733e68496d74cd3240ef823521e3b84
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-/build/
-
-### VS Code ###
-.vscode/

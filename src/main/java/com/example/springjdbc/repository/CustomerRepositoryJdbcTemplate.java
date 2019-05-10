@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import com.example.springjdbc.model.Customer;
 
@@ -17,6 +21,9 @@ public class CustomerRepositoryJdbcTemplate {
 
 	@Autowired
 	private JdbcTemplate jdbctemplate;
+
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	private static final String SQL = "select * from customer";
 	private static final String sql1 = "select * from customer where age>10 and age<17";
@@ -90,20 +97,51 @@ public class CustomerRepositoryJdbcTemplate {
 
 			@Override
 			public Customer extractData(ResultSet rs) throws SQLException, DataAccessException {
-				
-				if(rs.next()) 
-				{
-				 Customer customer = new  Customer();
-				 customer.setFirstName(rs.getString("firstName"));
-				 customer.setLastName(rs.getString("lastName"));
-				 customer.setEmpid(rs.getInt(4));
-				 customer.setAge(rs.getInt(3));
-				 return customer;
+
+				if (rs.next()) {
+					Customer customer = new Customer();
+					customer.setFirstName(rs.getString("firstName"));
+					customer.setLastName(rs.getString("lastName"));
+					customer.setEmpid(rs.getInt(4));
+					customer.setAge(rs.getInt(3));
+					return customer;
 				}
-				
+
 				return null;
 			}
 		});
 	}
 
+	public Customer getCallWithRowMapper(String age, String empid) {
+
+		String sql4 = "select * from customer where age =:age";
+
+		SqlParameterSource paramSource = new MapSqlParameterSource().addValue("age", Integer.valueOf(age));
+
+		return namedParameterJdbcTemplate.queryForObject(sql4, paramSource, new RowMapper<Customer>() {
+
+			@Override
+			public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				if (rs.next()) {
+					Customer customer = new Customer();
+					customer.setFirstName(rs.getString("firstName"));
+					return customer;
+				}
+
+				return null;
+			}
+		});
+
+		/*
+		 * return jdbctemplate.query(sql4, new ResultSetExtractor<Customer>() {
+		 * 
+		 * @Override public Customer extractData(ResultSet rs) throws SQLException,
+		 * DataAccessException {
+		 * 
+		 * if (rs.next()) { Customer customer = new Customer();
+		 * customer.setFirstName(rs.getString("firstName")); return customer; }
+		 * 
+		 * return null; } });
+		 */
+	}
 }

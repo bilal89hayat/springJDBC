@@ -5,13 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springjdbc.model.Customer;
 import com.example.springjdbc.repository.CustomerRepositoryJdbcTemplate;
-
-
 
 @RestController
 public class IndexController {
@@ -54,31 +53,37 @@ public class IndexController {
 		System.out.println("in /hello");
 		return " ==== hello ==== ";
 	}
-	
+
 	@GetMapping("/getSumOfAges")
-	public int getSumOfAges() 
-	{
+	public int getSumOfAges() {
 		return customerRepository.sumOfAges();
 	}
-	
+
 	@GetMapping("/getWithinRange")
-	public List<Customer> getCustomersWithinRange() 
-	{
+	public List<Customer> getCustomersWithinRange() {
 		List<Customer> customers = customerRepository.getwithrange();
 		return customers;
 	}
-	
-	@GetMapping("/byAge/{age}") //using pathvariable
-	public Customer getByAge(@PathVariable int age) 
-	{
-	 return customerRepository.getCustomerbyAge(age);	
+
+	@GetMapping("/byAge/{age}") // using pathvariable
+	public Customer getByAge(@PathVariable int age) {
+		return customerRepository.getCustomerbyAge(age);
 	}
 
-	@GetMapping("/byEmpId") //using request parameter
-	public Customer getByEmpId(@RequestParam (value = "empId") String str) 
-	{
-	 return customerRepository.getByEMPID(str);	
+	@GetMapping("/byEmpId") // using request parameter
+	public Customer getByEmpId(@RequestParam(value = "empId") String str) {
+		return customerRepository.getByEMPID(str);
 	}
-	
-	
+
+	@GetMapping("/byAge/{age}/empid/{empid}") // using path variable
+	public Customer getUsingRowMapper(@PathVariable String age, @PathVariable String empid) {
+
+		return customerRepository.getCallWithRowMapper(age, empid);
+	}
+
+	@PostMapping("/")
+	public void insertInCustomer() {
+
+	}
+
 }
